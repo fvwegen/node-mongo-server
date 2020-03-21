@@ -1,40 +1,40 @@
-const Movie = require('../models/movie-model');
+const Division = require('../models/divisions-model');
 
 
-createMovie = (req, res) => {
+createDivision = (req, res) => {
     const body = req.body
 
     if (!body) {
         return res.status(400).json({
             success: false,
-            error: 'You must provide a movie',
+            error: 'You must provide a division',
         })
     }
 
-    const movie = new Movie(body)
+    const division = new Division(body)
 
-    if (!movie) {
+    if (!division) {
         return res.status(400).json({ success: false, error: err })
     }
 
-    movie
+    division
         .save()
         .then(() => {
             return res.status(201).json({
                 success: true,
-                id: movie._id,
-                message: 'Movie created!',
+                id: division._id,
+                message: 'Division created!',
             })
         })
         .catch(error => {
             return res.status(400).json({
                 error,
-                message: 'Movie not created!',
+                message: 'Division not created!',
             })
         })
 }
 
-updateMovie = async (req, res) => {
+updateDivision = async (req, res) => {
     const body = req.body
 
     if (!body) {
@@ -44,83 +44,82 @@ updateMovie = async (req, res) => {
         })
     }
 
-    Movie.findOne({ _id: req.params.id }, (err, movie) => {
+    Division.findOne({ _id: req.params.id }, (err, division) => {
         if (err) {
             return res.status(404).json({
                 err,
-                message: 'Movie not found!',
+                message: 'Division not found!',
             })
         }
-        movie.name = body.name
-        movie.time = body.time
-        movie.rating = body.rating
-        movie
+        division.Number = body.Number
+        division.Description = body.Description
+        division
             .save()
             .then(() => {
                 return res.status(200).json({
                     success: true,
-                    id: movie._id,
-                    message: 'Movie updated!',
+                    id:division._id,
+                    message: 'Division updated!',
                 })
             })
             .catch(error => {
                 return res.status(404).json({
                     error,
-                    message: 'Movie not updated!',
+                    message: 'Division not updated!',
                 })
             })
     })
 }
 
-deleteMovie = async (req, res) => {
-    await Movie.findOneAndDelete({ _id: req.params.id }, (err, movie) => {
+deleteDivision = async (req, res) => {
+    await Division.findOneAndDelete({ _id: req.params.id }, (err, division) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
 
-        if (!movie) {
+        if (!division) {
             return res
                 .status(404)
-                .json({ success: false, error: `Movie not found` })
+                .json({ success: false, error: `Division not found` })
         }
 
-        return res.status(200).json({ success: true, data: movie })
+        return res.status(200).json({ success: true, data: divison })
     }).catch(err => console.log(err))
 }
 
-getMovieById = async (req, res) => {
-    await Movie.findOne({ _id: req.params.id }, (err, movie) => {
+getDivisionById = async (req, res) => {
+    await Division.findOne({ _id: req.params.id }, (err, division) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
 
-        if (!movie) {
+        if (!division) {
             return res
                 .status(404)
-                .json({ success: false, error: `Movie not found` })
+                .json({ success: false, error: `Division not found` })
         }
-        return res.status(200).json({ success: true, data: movie })
+        return res.status(200).json({ success: true, data: division })
     }).catch(err => console.log(err))
 }
 
-getMovies = async (req, res) => {
-    await Movie.find({}, (err, movies) => {
+getDivisions = async (req, res) => {
+    await Division.find({}, (err, divisions) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
-        if (!movies.length) {
+        if (!divisions.length) {
             return res
                 .status(404)
-                .json({ success: false, error: `Movie not found` })
+                .json({ success: false, error: `No divisions found` })
         }
-        return res.status(200).json({ success: true, data: movies })
+        return res.status(200).json({ success: true, data: divisions })
     }).catch(err => console.log(err))
 }
 
 module.exports = {
-    createMovie,
-    updateMovie,
-    deleteMovie,
-    getMovies,
-    getMovieById,
+    createDivision,
+    updateDivision,
+    deleteDivision,
+    getDivisions,
+    getDivisionById,
 }
