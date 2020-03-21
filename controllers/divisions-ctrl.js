@@ -83,7 +83,7 @@ deleteDivision = async (req, res) => {
                 .json({ success: false, error: `Division not found` })
         }
 
-        return res.status(200).json({ success: true, data: divison })
+        return res.status(200).json({ success: true, data: division })
     }).catch(err => console.log(err))
 }
 
